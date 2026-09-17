@@ -397,18 +397,6 @@ h1, h2 { margin: 0; font-family: var(--font-serif); }
   color: var(--ink);
 }
 .search-bar input::placeholder { color: var(--ink-faint); }
-.filter-chips { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-.chip {
-  border: 1px solid var(--line);
-  background: var(--surface);
-  color: var(--ink-soft);
-  border-radius: 20px;
-  padding: 8px 15px;
-  font-size: 13.5px;
-  font-weight: 600;
-  cursor: pointer;
-}
-.chip--active { background: var(--copper); color: #201607; border-color: var(--copper); }
 
 /* ===================== MODAL / BOTTOM SHEET ===================== */
 .sheet-overlay {

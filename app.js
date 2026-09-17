@@ -10,7 +10,6 @@ let firstBuildingsSnapshot = true;
 
 let currentBuildingId = null;   // bina detay ekranında hangi bina gösteriliyor
 
-let currentPropertyFilter = "all";
 let currentSearchTerm = "";
 
 // ------------------------------------------------------------
@@ -128,13 +127,13 @@ function renderAll() {
   renderDashboard();
   renderBuildingsList();
   if (currentBuildingId) renderBuildingDetail(currentBuildingId);
-  renderAllProperties();
+  renderTenantsList();
 }
 
 // ============================================================
 // SEKME NAVİGASYONU
 // ============================================================
-const viewTitles = { panel: "Panel", buildings: "Binalar", "building-detail": "Bina Detayı", properties: "Mülkler" };
+const viewTitles = { panel: "Panel", buildings: "Binalar", "building-detail": "Bina Detayı", tenants: "Kiracılar" };
 
 function showView(name) {
   document.querySelectorAll(".view").forEach(v => v.classList.remove("view--active"));
@@ -192,13 +191,13 @@ function renderBuildingsList() {
     const pct = n => (n / total * 100).toFixed(1);
     return `<div class="building-card" data-id="${b.id}">
       <h3>${escapeHtml(b.ad)}</h3>
-      <div class="addr">${escapeHtml(b.mahalle || "—")} / ${escapeHtml(b.ilce)} · ${props.length} mülk</div>
+      <div class="addr">${escapeHtml(b.mahalle || "—")} / ${escapeHtml(b.ilce)} · ${props.length} bağımsız bölüm</div>
       <div class="occ-bar">
         <span style="width:${pct(rented)}%; background:var(--rented)"></span>
         <span style="width:${pct(vacant)}%; background:var(--vacant)"></span>
         <span style="width:${pct(priv)}%; background:var(--private)"></span>
       </div>
-      <div class="occ-meta"><span>${rented} kirada</span><span>${vacant} boş</span><span>${priv} özel</span></div>
+      <div class="occ-meta"><span>${rented} kirada</span><span>${vacant} boş</span><span>${priv} özel kullanım</span></div>
     </div>`;
   }).join("");
 
@@ -241,32 +240,25 @@ el("edit-building-btn").addEventListener("click", () => {
 });
 
 // ============================================================
-// TÜM MÜLKLER
+// KİRACILAR
 // ============================================================
-el("property-search").addEventListener("input", (e) => {
+el("tenant-search").addEventListener("input", (e) => {
   currentSearchTerm = e.target.value.trim().toLowerCase();
-  renderAllProperties();
+  renderTenantsList();
 });
 
-document.querySelectorAll("#status-filters .chip").forEach(chip => {
-  chip.addEventListener("click", () => {
-    document.querySelectorAll("#status-filters .chip").forEach(c => c.classList.remove("chip--active"));
-    chip.classList.add("chip--active");
-    currentPropertyFilter = chip.dataset.filter;
-    renderAllProperties();
-  });
-});
-
-function renderAllProperties() {
-  const box = el("all-properties-list");
-  let list = properties.map(p => ({ ...p, building: buildingById(p.buildingId) }));
-
-  if (currentPropertyFilter !== "all") {
-    list = list.filter(p => p.durum === currentPropertyFilter);
+function renderTenantsList() {
+  const box = el("tenants-list");
+  const rented = properties.filter(p => p.durum === "Kirada").map(p => ({ ...p, building: buildingById(p.buildingId) }));
+  if (rented.length === 0) {
+    box.innerHTML = `<div class="empty-state">Henüz kiracı yok.</div>`;
+    return;
   }
+
+  let list = rented;
   if (currentSearchTerm) {
     list = list.filter(p => {
-      const hay = [p.building ? p.building.ad : "", p.kiraci, p.nitelik].join(" ").toLowerCase();
+      const hay = [p.building ? p.building.ad : "", p.kiraci].join(" ").toLowerCase();
       return hay.includes(currentSearchTerm);
     });
   }
@@ -274,7 +266,7 @@ function renderAllProperties() {
 
   box.innerHTML = list.length
     ? list.map(p => propertyCardHtml(p, true)).join("")
-    : `<div class="empty-state">Arama kriterlerine uyan mülk bulunamadı.</div>`;
+    : `<div class="empty-state">Arama kriterlerine uyan kiracı bulunamadı.</div>`;
   attachPropertyCardHandlers(box);
 }
 
