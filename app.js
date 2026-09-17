@@ -9,6 +9,7 @@ let unsubProperties = null;
 let firstBuildingsSnapshot = true;
 
 let currentBuildingId = null;   // bina detay ekranında hangi bina gösteriliyor
+
 let currentPropertyFilter = "all";
 let currentSearchTerm = "";
 let confirmAction = null;
@@ -115,9 +116,7 @@ auth.onAuthStateChanged(user => {
 function attachFirestoreListeners() {
   unsubBuildings = db.collection("buildings").orderBy("ad").onSnapshot(snap => {
     buildings = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    el("seed-banner").hidden = buildings.length > 0;
     renderAll();
-    firstBuildingsSnapshot = false;
   }, err => showToast("Bina verileri okunamadı: " + err.message));
 
   unsubProperties = db.collection("properties").onSnapshot(snap => {
@@ -132,34 +131,6 @@ function renderAll() {
   if (currentBuildingId) renderBuildingDetail(currentBuildingId);
   renderAllProperties();
 }
-
-// ============================================================
-// ÖRNEK VERİ YÜKLEME
-// ============================================================
-el("seed-btn").addEventListener("click", async () => {
-  el("seed-btn").disabled = true;
-  el("seed-btn").textContent = "Yükleniyor…";
-  try {
-    const nameToId = {};
-    for (const b of SEED_BUILDINGS) {
-      const ref = await db.collection("buildings").add(b);
-      nameToId[b.ad] = ref.id;
-    }
-    const batch = db.batch();
-    for (const p of SEED_PROPERTIES) {
-      const ref = db.collection("properties").doc();
-      const { buildingAd, kiraci, sozlesme, ...rest } = p;
-      batch.set(ref, { ...rest, kiraci: kiraci || "", sozlesme: sozlesme || null, buildingId: nameToId[buildingAd] });
-    }
-    await batch.commit();
-    showToast("Örnek veriler yüklendi.");
-  } catch (err) {
-    showToast("Yükleme başarısız: " + err.message);
-  } finally {
-    el("seed-btn").disabled = false;
-    el("seed-btn").textContent = "Örnek verileri yükle";
-  }
-});
 
 // ============================================================
 // SEKME NAVİGASYONU
@@ -201,27 +172,6 @@ function renderDashboard() {
   el("count-rented").textContent = rented.length;
   el("count-vacant").textContent = vacant.length;
   el("count-private").textContent = priv.length;
-
-  const oldest = rented
-    .filter(p => p.sozlesme)
-    .sort((a, b) => a.sozlesme.localeCompare(b.sozlesme))
-    .slice(0, 5);
-
-  const box = el("oldest-contracts");
-  if (oldest.length === 0) {
-    box.innerHTML = `<div class="empty-state">Henüz aktif kira sözleşmesi yok.</div>`;
-  } else {
-    box.innerHTML = oldest.map(p => {
-      const b = buildingById(p.buildingId);
-      return `<div class="plain-row">
-        <div>
-          <div class="plain-title">${escapeHtml(p.kiraci || "—")}</div>
-          <div class="plain-sub">${escapeHtml(b ? b.ad : "")} · ${escapeHtml(p.kat || "")} ${escapeHtml(p.no || "")}</div>
-        </div>
-        <div class="plain-date">${formatDateTR(p.sozlesme)}</div>
-      </div>`;
-    }).join("");
-  }
 }
 
 // ============================================================

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#EFEAE0">
+<meta name="theme-color" content="#12140F">
 <title>Mülk Defteri</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,11 +55,6 @@
 
     <!-- ---------- PANEL (Dashboard) ---------- -->
     <section id="view-panel" class="view">
-      <div id="seed-banner" class="seed-banner" hidden>
-        <p>Firestore veritabanınız boş görünüyor. Örnek bina ve mülk verilerini yükleyerek başlayabilirsiniz.</p>
-        <button id="seed-btn" class="btn btn-secondary">Örnek verileri yükle</button>
-      </div>
-
       <div class="stat-grid">
         <div class="stat-card stat-card--accent">
           <span class="stat-number" id="stat-income">₺0</span>
@@ -84,9 +79,6 @@
         <div class="legend-row"><span class="dot dot--vacant"></span> Boş <b id="count-vacant">0</b></div>
         <div class="legend-row"><span class="dot dot--private"></span> Özel kullanım <b id="count-private">0</b></div>
       </div>
-
-      <h2 class="section-heading">Sözleşmesi en eski 5 mülk</h2>
-      <div id="oldest-contracts" class="list-plain"></div>
     </section>
 
     <!-- ---------- BİNALAR ---------- -->
@@ -224,7 +216,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
 
 <script src="firebase-config.js"></script>
-<script src="seed-data.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
