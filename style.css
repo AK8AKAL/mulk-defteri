@@ -28,6 +28,11 @@
 
 * { box-sizing: border-box; }
 
+/* [hidden] her zaman kazanmalı — aksi halde .auth-screen / .app-shell / .sheet-overlay
+   gibi kendi "display" değeri olan sınıflar, tarayıcının hidden özelliğini ezip
+   pencereleri kapatılması gerekirken görünür bırakabilir. */
+[hidden] { display: none !important; }
+
 html, body {
   margin: 0;
   padding: 0;
