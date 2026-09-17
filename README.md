@@ -8,7 +8,6 @@ Kira takibi için mobil ağırlıklı, Firebase tabanlı web uygulaması. 8 bina
 - `style.css` — tasarım
 - `app.js` — tüm uygulama mantığı (auth, Firestore CRUD, arayüz)
 - `firebase-config.js` — **kendi Firebase bilgilerinizi buraya gireceksiniz**
-- `seed-data.js` — verdiğiniz bina/mülk tablolarından oluşturulmuş örnek veri
 
 ## 1) Firebase projesi oluşturma
 
@@ -80,9 +79,9 @@ Sonra `http://localhost:8000` adresini açın.
 3. Birkaç dakika sonra `https://KULLANICI_ADINIZ.github.io/mulk-defteri/` adresinde yayında olacaktır.
 4. iPhone'da Safari'de bu adresi açıp **Paylaş > Ana Ekrana Ekle** ile uygulamayı bir simge olarak ana ekranınıza koyabilirsiniz; tam ekran açılır.
 
-## 6) İlk verileri yükleme
+## 6) Bina ve mülk ekleme
 
-Uygulamaya giriş yaptığınızda Firestore'unuz boşsa Panel ekranında bir banner çıkar: **"Örnek verileri yükle"**. Bu, verdiğiniz 8 bina ve 25 mülkü otomatik olarak Firestore'a yazar. Daha sonra her binayı/mülkü uygulama içinden düzenleyebilir, silebilir veya yenilerini ekleyebilirsiniz.
+Uygulama boş başlar. **Binalar** sekmesinden "+ Yeni bina ekle" ile binalarınızı, her binanın detay ekranından da "+ Mülk ekle" ile içindeki mülkleri tek tek girebilirsiniz.
 
 ## Veri modeli (Firestore)
 
@@ -94,8 +93,8 @@ Uygulamaya giriş yaptığınızda Firestore'unuz boşsa Panel ekranında bir ba
 
 ## Sonradan eklenebilecek geliştirmeler
 
+- **Kira takibi**: her ay için ayrı tahsilat kaydı, ödendi/ödenmedi durumu (planlanıyor)
 - Kira artış oranı / TÜFE hesaplayıcı ile otomatik yeni kira önerisi
 - Sözleşme yenileme tarihi yaklaşınca bildirim
-- Ödeme geçmişi (her ay için ayrı tahsilat kaydı)
 - Bina/mülk fotoğrafı (Firebase Storage ile)
 - Gider takibi (aidat, vergi, tadilat) ve net getiri hesabı
