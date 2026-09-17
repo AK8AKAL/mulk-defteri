@@ -12,7 +12,6 @@ let currentBuildingId = null;   // bina detay ekranında hangi bina gösteriliyo
 
 let currentPropertyFilter = "all";
 let currentSearchTerm = "";
-let confirmAction = null;
 
 // ------------------------------------------------------------
 // Yardımcı fonksiyonlar
@@ -180,7 +179,7 @@ function renderDashboard() {
 function renderBuildingsList() {
   const box = el("buildings-list");
   if (buildings.length === 0) {
-    box.innerHTML = `<div class="empty-state">Henüz bina eklenmedi. Yukarıdan ilk binanızı ekleyin.</div>`;
+    box.innerHTML = `<div class="empty-state">Henüz bina eklenmedi.</div>`;
     return;
   }
   box.innerHTML = buildings.map(b => {
@@ -211,8 +210,6 @@ function renderBuildingsList() {
   });
 }
 
-el("add-building-btn").addEventListener("click", () => openBuildingModal());
-
 // ============================================================
 // BİNA DETAYI
 // ============================================================
@@ -240,28 +237,6 @@ function renderBuildingDetail(id) {
 
 el("edit-building-btn").addEventListener("click", () => {
   if (currentBuildingId) openBuildingModal(buildingById(currentBuildingId));
-});
-
-el("delete-building-btn").addEventListener("click", () => {
-  const b = buildingById(currentBuildingId);
-  if (!b) return;
-  const count = propertiesOf(b.id).length;
-  openConfirm(
-    `"${b.ad}" binası ve içindeki ${count} mülk kalıcı olarak silinecek. Emin misiniz?`,
-    async () => {
-      try {
-        const batch = db.batch();
-        propertiesOf(b.id).forEach(p => batch.delete(db.collection("properties").doc(p.id)));
-        batch.delete(db.collection("buildings").doc(b.id));
-        await batch.commit();
-        currentBuildingId = null;
-        showView("buildings");
-        showToast("Bina silindi.");
-      } catch (err) {
-        showToast("Silme başarısız: " + err.message);
-      }
-    }
-  );
 });
 
 // ============================================================
@@ -324,7 +299,6 @@ function propertyCardHtml(p, showBuildingTag) {
       </div>` : ""}
     <div class="p-actions">
       <button data-action="edit">Düzenle</button>
-      <button data-action="delete" class="danger">Sil</button>
     </div>
   </div>`;
 }
@@ -335,16 +309,6 @@ function attachPropertyCardHandlers(container) {
     const property = properties.find(p => p.id === id);
     if (!property) return;
     card.querySelector('[data-action="edit"]').addEventListener("click", () => openPropertyModal(property.buildingId, property));
-    card.querySelector('[data-action="delete"]').addEventListener("click", () => {
-      openConfirm(`"${property.nitelik}" mülkü kalıcı olarak silinecek. Emin misiniz?`, async () => {
-        try {
-          await db.collection("properties").doc(id).delete();
-          showToast("Mülk silindi.");
-        } catch (err) {
-          showToast("Silme başarısız: " + err.message);
-        }
-      });
-    });
   });
 }
 
@@ -352,15 +316,15 @@ function attachPropertyCardHandlers(container) {
 // MODAL: BİNA FORMU
 // ============================================================
 function openBuildingModal(building) {
-  el("building-modal-title").textContent = building ? "Binayı düzenle" : "Yeni bina";
-  el("building-id").value = building ? building.id : "";
-  el("b-ad").value = building ? building.ad : "";
-  el("b-il").value = building ? building.il : "";
-  el("b-ilce").value = building ? building.ilce : "";
-  el("b-mahalle").value = building ? building.mahalle || "" : "";
-  el("b-binano").value = building ? building.binaNo || "" : "";
-  el("b-adaparsel").value = building ? building.adaParsel || "" : "";
-  el("b-yuzolcumu").value = building ? building.yuzolcumu || "" : "";
+  el("building-modal-title").textContent = "Binayı düzenle";
+  el("building-id").value = building.id;
+  el("b-ad").value = building.ad;
+  el("b-il").value = building.il;
+  el("b-ilce").value = building.ilce;
+  el("b-mahalle").value = building.mahalle || "";
+  el("b-binano").value = building.binaNo || "";
+  el("b-adaparsel").value = building.adaParsel || "";
+  el("b-yuzolcumu").value = building.yuzolcumu || "";
   el("building-modal").hidden = false;
 }
 
@@ -377,14 +341,8 @@ el("building-form").addEventListener("submit", async (e) => {
     yuzolcumu: el("b-yuzolcumu").value ? Number(el("b-yuzolcumu").value) : null,
   };
   try {
-    if (id) {
-      await db.collection("buildings").doc(id).update(data);
-      showToast("Bina güncellendi.");
-    } else {
-      const ref = await db.collection("buildings").add(data);
-      currentBuildingId = ref.id;
-      showToast("Bina eklendi.");
-    }
+    await db.collection("buildings").doc(id).update(data);
+    showToast("Bina güncellendi.");
     closeModals();
   } catch (err) {
     showToast("Kaydedilemedi: " + err.message);
@@ -402,23 +360,19 @@ function toggleTenantFields() {
 el("p-durum").addEventListener("change", toggleTenantFields);
 
 function openPropertyModal(buildingId, property) {
-  el("property-modal-title").textContent = property ? "Mülkü düzenle" : "Yeni mülk";
-  el("p-id").value = property ? property.id : "";
+  el("property-modal-title").textContent = "Mülkü düzenle";
+  el("p-id").value = property.id;
   el("p-buildingid").value = buildingId;
-  el("p-kat").value = property ? property.kat || "" : "";
-  el("p-no").value = property ? property.no || "" : "";
-  el("p-nitelik").value = property ? property.nitelik || "" : "";
-  el("p-durum").value = property ? property.durum : "Boş";
-  el("p-kiraci").value = property ? property.kiraci || "" : "";
-  el("p-kirabedeli").value = property && property.kiraBedeli ? property.kiraBedeli : "";
-  el("p-sozlesme").value = property ? property.sozlesme || "" : "";
+  el("p-kat").value = property.kat || "";
+  el("p-no").value = property.no || "";
+  el("p-nitelik").value = property.nitelik || "";
+  el("p-durum").value = property.durum;
+  el("p-kiraci").value = property.kiraci || "";
+  el("p-kirabedeli").value = property.kiraBedeli ? property.kiraBedeli : "";
+  el("p-sozlesme").value = property.sozlesme || "";
   toggleTenantFields();
   el("property-modal").hidden = false;
 }
-
-el("add-property-btn").addEventListener("click", () => {
-  if (currentBuildingId) openPropertyModal(currentBuildingId);
-});
 
 el("property-form").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -435,31 +389,12 @@ el("property-form").addEventListener("submit", async (e) => {
     sozlesme: durum === "Kirada" && el("p-sozlesme").value ? el("p-sozlesme").value : null,
   };
   try {
-    if (id) {
-      await db.collection("properties").doc(id).update(data);
-      showToast("Mülk güncellendi.");
-    } else {
-      await db.collection("properties").add(data);
-      showToast("Mülk eklendi.");
-    }
+    await db.collection("properties").doc(id).update(data);
+    showToast("Mülk güncellendi.");
     closeModals();
   } catch (err) {
     showToast("Kaydedilemedi: " + err.message);
   }
-});
-
-// ============================================================
-// ONAY DİYALOĞU
-// ============================================================
-function openConfirm(message, action) {
-  el("confirm-message").textContent = message;
-  confirmAction = action;
-  el("confirm-modal").hidden = false;
-}
-el("confirm-ok").addEventListener("click", async () => {
-  if (confirmAction) await confirmAction();
-  confirmAction = null;
-  closeModals();
 });
 
 // ============================================================
@@ -468,7 +403,6 @@ el("confirm-ok").addEventListener("click", async () => {
 function closeModals() {
   el("building-modal").hidden = true;
   el("property-modal").hidden = true;
-  el("confirm-modal").hidden = true;
 }
 document.querySelectorAll("[data-close-modal]").forEach(btn => btn.addEventListener("click", closeModals));
 document.querySelectorAll(".sheet-overlay").forEach(overlay => {

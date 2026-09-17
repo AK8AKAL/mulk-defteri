@@ -81,7 +81,7 @@ Sonra `http://localhost:8000` adresini açın.
 
 ## 6) Bina ve mülk ekleme
 
-Uygulama boş başlar. **Binalar** sekmesinden "+ Yeni bina ekle" ile binalarınızı, her binanın detay ekranından da "+ Mülk ekle" ile içindeki mülkleri tek tek girebilirsiniz.
+Uygulamada bina/mülk ekleme veya silme yoktur — bunlar doğrudan Firebase konsolundaki Firestore Database arayüzünden yapılır (`buildings` ve `properties` koleksiyonlarına belge ekleyip silerek, alan adları aşağıdaki veri modeline göre). Uygulama içinden sadece mevcut bina ve mülklerin bilgileri düzenlenebilir.
 
 ## Veri modeli (Firestore)
 
