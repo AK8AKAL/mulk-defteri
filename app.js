@@ -182,7 +182,8 @@ function renderBuildingsList() {
     box.innerHTML = `<div class="empty-state">Henüz bina eklenmedi.</div>`;
     return;
   }
-  box.innerHTML = buildings.map(b => {
+  const sorted = [...buildings].sort((a, b) => propertiesOf(b.id).length - propertiesOf(a.id).length);
+  box.innerHTML = sorted.map(b => {
     const props = propertiesOf(b.id);
     const total = props.length || 1;
     const rented = props.filter(p => p.durum === "Kirada").length;
