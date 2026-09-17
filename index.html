@@ -83,7 +83,6 @@
 
     <!-- ---------- BİNALAR ---------- -->
     <section id="view-buildings" class="view">
-      <button id="add-building-btn" class="btn btn-primary btn-block btn-add">+ Yeni bina ekle</button>
       <div id="buildings-list" class="building-list"></div>
     </section>
 
@@ -94,12 +93,10 @@
 
       <div class="detail-actions">
         <button id="edit-building-btn" class="btn btn-ghost">Binayı düzenle</button>
-        <button id="delete-building-btn" class="btn btn-ghost btn-danger">Binayı sil</button>
       </div>
 
       <div class="section-row">
         <h2 class="section-heading">Mülkler</h2>
-        <button id="add-property-btn" class="btn btn-secondary btn-small">+ Mülk ekle</button>
       </div>
       <div id="building-properties-list" class="property-list"></div>
     </section>
@@ -193,18 +190,6 @@
         <button type="submit" class="btn btn-primary">Kaydet</button>
       </div>
     </form>
-  </div>
-</div>
-
-<!-- ===================== ONAY DİYALOĞU ===================== -->
-<div id="confirm-modal" class="sheet-overlay" hidden>
-  <div class="sheet sheet--confirm">
-    <div class="sheet-handle"></div>
-    <p id="confirm-message" class="confirm-message"></p>
-    <div class="sheet-buttons">
-      <button type="button" class="btn btn-ghost" data-close-modal>Vazgeç</button>
-      <button type="button" id="confirm-ok" class="btn btn-danger-solid">Sil</button>
-    </div>
   </div>
 </div>
 

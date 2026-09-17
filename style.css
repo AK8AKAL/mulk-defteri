@@ -160,12 +160,7 @@ h1, h2 { margin: 0; font-family: var(--font-serif); }
 .btn:active { transform: scale(0.98); }
 .btn-block { width: 100%; }
 .btn-primary { background: var(--copper); color: #201607; }
-.btn-secondary { background: var(--copper-tint); color: var(--copper); border: 1px solid var(--copper-dark); }
 .btn-ghost { background: transparent; color: var(--ink-soft); border: 1px solid var(--line); }
-.btn-danger { color: var(--vacant); border-color: var(--vacant-tint); }
-.btn-danger-solid { background: var(--vacant); color: #2A140D; }
-.btn-small { padding: 9px 15px; font-size: 14.5px; }
-.btn-add { margin-bottom: 16px; }
 
 .icon-btn {
   background: none;
@@ -390,7 +385,6 @@ h1, h2 { margin: 0; font-family: var(--font-serif); }
   background: none; border: none; color: var(--ink-faint);
   font-size: 13.5px; cursor: pointer; padding: 4px 0; text-decoration: underline; text-underline-offset: 2px;
 }
-.property-card .p-actions button.danger { color: var(--vacant); }
 
 /* ===================== ARAMA / FİLTRE ===================== */
 .search-bar { margin-bottom: 12px; }
@@ -438,7 +432,6 @@ h1, h2 { margin: 0; font-family: var(--font-serif); }
   padding: 10px 22px calc(24px + env(safe-area-inset-bottom));
   box-shadow: var(--shadow-sheet);
 }
-.sheet--confirm { padding-top: 18px; }
 .sheet-handle {
   width: 40px; height: 4px;
   background: var(--line);
@@ -449,7 +442,6 @@ h1, h2 { margin: 0; font-family: var(--font-serif); }
 .sheet-form { display: flex; flex-direction: column; gap: 14px; }
 .sheet-buttons { display: flex; gap: 10px; margin-top: 8px; }
 .sheet-buttons .btn { flex: 1; }
-.confirm-message { font-size: 15.5px; color: var(--ink-soft); line-height: 1.5; margin: 0 0 6px; }
 
 /* ===================== TOAST ===================== */
 .toast {
