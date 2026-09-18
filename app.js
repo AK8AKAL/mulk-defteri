@@ -190,7 +190,7 @@ function renderBuildingsList() {
     const pct = n => (n / total * 100).toFixed(1);
     return `<div class="building-card" data-id="${b.id}">
       <h3>${escapeHtml(b.ad)}</h3>
-      <div class="addr"><span>${escapeHtml(b.mahalle || "—")} / ${escapeHtml(b.ilce)}</span><span class="addr-income">${formatCurrency(income)}</span></div>
+      <div class="addr"><span>${escapeHtml(b.mahalle || "—")} / ${escapeHtml(b.ilce)}</span>${income > 0 ? `<span class="addr-income">${formatCurrency(income)}</span>` : ""}</div>
       <div class="occ-bar">
         <span style="width:${pct(rented)}%; background:var(--rented)"></span>
         <span style="width:${pct(vacant)}%; background:var(--vacant)"></span>
