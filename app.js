@@ -164,9 +164,6 @@ function renderDashboard() {
   const income = rented.reduce((sum, p) => sum + (Number(p.kiraBedeli) || 0), 0);
 
   el("stat-income").textContent = formatCurrency(income);
-  el("stat-buildings").textContent = buildings.length;
-  el("stat-properties").textContent = properties.length;
-  el("stat-vacant").textContent = vacant.length;
   el("count-rented").textContent = rented.length;
   el("count-vacant").textContent = vacant.length;
   el("count-private").textContent = priv.length;
