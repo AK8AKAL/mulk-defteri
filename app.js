@@ -182,13 +182,15 @@ function renderBuildingsList() {
   box.innerHTML = sorted.map(b => {
     const props = propertiesOf(b.id);
     const total = props.length || 1;
-    const rented = props.filter(p => p.durum === "Kirada").length;
+    const rentedProps = props.filter(p => p.durum === "Kirada");
+    const rented = rentedProps.length;
     const vacant = props.filter(p => p.durum === "Boş").length;
     const priv = props.filter(p => p.durum === "Özel Kullanım").length;
+    const income = rentedProps.reduce((sum, p) => sum + (Number(p.kiraBedeli) || 0), 0);
     const pct = n => (n / total * 100).toFixed(1);
     return `<div class="building-card" data-id="${b.id}">
       <h3>${escapeHtml(b.ad)}</h3>
-      <div class="addr">${escapeHtml(b.mahalle || "—")} / ${escapeHtml(b.ilce)} · ${props.length} bağımsız bölüm</div>
+      <div class="addr"><span>${escapeHtml(b.mahalle || "—")} / ${escapeHtml(b.ilce)}</span><span class="addr-income">${formatCurrency(income)}</span></div>
       <div class="occ-bar">
         <span style="width:${pct(rented)}%; background:var(--rented)"></span>
         <span style="width:${pct(vacant)}%; background:var(--vacant)"></span>
