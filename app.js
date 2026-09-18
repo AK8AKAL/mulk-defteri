@@ -219,12 +219,10 @@ function renderBuildingDetail(id) {
 
   el("building-detail-card").innerHTML = `
     <h2>${escapeHtml(b.ad)}</h2>
-    <div class="addr">${escapeHtml([b.mahalle ? b.mahalle + " Mah." : "", b.cadde, `${b.ilce} / ${b.il}`].filter(Boolean).join(" "))}</div>
+    <div class="addr">${escapeHtml([b.mahalle ? b.mahalle + " Mah." : "", b.cadde, b.binaNo ? "No:" + b.binaNo : "", `${b.ilce} / ${b.il}`].filter(Boolean).join(" "))}</div>
     <dl class="detail-grid">
-      <div><dt>Bina no</dt><dd>${escapeHtml(b.binaNo || "—")}</dd></div>
       <div><dt>Ada/Parsel</dt><dd>${escapeHtml(b.adaParsel || "—")}</dd></div>
       <div><dt>Yüzölçümü</dt><dd>${b.yuzolcumu ? b.yuzolcumu + " m²" : "—"}</dd></div>
-      <div><dt>Bağımsız bölüm sayısı</dt><dd>${props.length}</dd></div>
     </dl>`;
 
   const list = el("building-properties-list");
