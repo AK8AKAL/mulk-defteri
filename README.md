@@ -86,7 +86,7 @@ Uygulamada bina/mülk ekleme veya silme yoktur — bunlar doğrudan Firebase kon
 ## Veri modeli (Firestore)
 
 **`buildings` koleksiyonu:**
-`ad, il, ilce, mahalle, binaNo, adaParsel, yuzolcumu`
+`ad, il, ilce, mahalle, cadde, binaNo, adaParsel, yuzolcumu`
 
 **`properties` koleksiyonu:**
 `buildingId, kat, no, nitelik, durum (Kirada/Boş/Özel Kullanım), kiraci, kiraBedeli, sozlesme (YYYY-MM-DD)`

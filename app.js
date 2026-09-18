@@ -219,7 +219,7 @@ function renderBuildingDetail(id) {
 
   el("building-detail-card").innerHTML = `
     <h2>${escapeHtml(b.ad)}</h2>
-    <div class="addr">${escapeHtml(b.mahalle || "")} Mah. · ${escapeHtml(b.ilce)} / ${escapeHtml(b.il)}</div>
+    <div class="addr">${escapeHtml([b.mahalle ? b.mahalle + " Mah." : "", b.cadde, `${b.ilce} / ${b.il}`].filter(Boolean).join(" "))}</div>
     <dl class="detail-grid">
       <div><dt>Bina no</dt><dd>${escapeHtml(b.binaNo || "—")}</dd></div>
       <div><dt>Ada/Parsel</dt><dd>${escapeHtml(b.adaParsel || "—")}</dd></div>
