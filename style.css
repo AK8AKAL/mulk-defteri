@@ -11,12 +11,12 @@
   --copper-dark: #B87A3E;
   --copper-tint: #17140D;
 
-  --rented: #7FC08F;
-  --rented-tint: rgba(127, 192, 143, 0.14);
+  --rented: #8EB0DE;
+  --rented-tint: rgba(142, 176, 222, 0.14);
   --vacant: #E28F79;
   --vacant-tint: rgba(226, 143, 121, 0.14);
-  --private: #8EB0DE;
-  --private-tint: rgba(142, 176, 222, 0.14);
+  --private: #E0C468;
+  --private-tint: rgba(224, 196, 104, 0.14);
 
   --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
   --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -357,7 +357,6 @@ h1, h2 { margin: 0; font-family: var(--font-serif); }
 .property-card .p-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
 .property-card .p-name { font-weight: 600; font-size: 16.5px; }
 .property-card .p-meta { color: var(--ink-faint); font-size: 13px; margin-top: 2px; }
-.property-card .p-building-tag { color: var(--copper); font-size: 13px; font-weight: 600; }
 
 .badge {
   font-size: 12px;

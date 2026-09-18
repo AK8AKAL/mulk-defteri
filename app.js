@@ -230,7 +230,7 @@ function renderBuildingDetail(id) {
 
   const list = el("building-properties-list");
   list.innerHTML = props.length
-    ? props.map(p => propertyCardHtml(p, false)).join("")
+    ? props.map(p => propertyCardHtml(p)).join("")
     : `<div class="empty-state">Bu binaya henüz mülk eklenmedi.</div>`;
   attachPropertyCardHandlers(list);
 }
@@ -265,22 +265,40 @@ function renderTenantsList() {
   list.sort((a, b) => (a.building?.ad || "").localeCompare(b.building?.ad || "", "tr"));
 
   box.innerHTML = list.length
-    ? list.map(p => propertyCardHtml(p, true)).join("")
+    ? list.map(p => tenantCardHtml(p)).join("")
     : `<div class="empty-state">Arama kriterlerine uyan kiracı bulunamadı.</div>`;
   attachPropertyCardHandlers(box);
 }
 
-// ============================================================
-// MÜLK KARTI — ORTAK ŞABLON
-// ============================================================
-function propertyCardHtml(p, showBuildingTag) {
+function tenantCardHtml(p) {
   const b = buildingById(p.buildingId);
-  const location = [p.kat, p.no].filter(Boolean).join(" · No ") || "—";
+  const subtitle = [b ? b.ad : null, p.kat, p.no].filter(Boolean).join(" - ");
+  return `<div class="property-card" data-id="${p.id}">
+    <div class="p-top">
+      <div>
+        <div class="p-name">${escapeHtml(p.kiraci || "—")}</div>
+        <div class="p-meta">${escapeHtml(subtitle)}</div>
+      </div>
+      <span class="badge ${badgeClass(p.durum)}">${escapeHtml(p.durum)}</span>
+    </div>
+    <div class="p-detail-row">
+      <span>Sözleşme: ${formatDateTR(p.sozlesme)}</span>
+      <span class="p-rent">${formatCurrency(p.kiraBedeli)}/ay</span>
+    </div>
+    <div class="p-actions">
+      <button data-action="edit">Düzenle</button>
+    </div>
+  </div>`;
+}
+
+// ============================================================
+// MÜLK KARTI — BİNA DETAYI ŞABLONU
+// ============================================================
+function propertyCardHtml(p) {
   const showRentRow = p.durum === "Kirada";
   return `<div class="property-card" data-id="${p.id}">
     <div class="p-top">
       <div>
-        ${showBuildingTag && b ? `<div class="p-building-tag">${escapeHtml(b.ad)}</div>` : ""}
         <div class="p-name">${escapeHtml(p.nitelik)}${p.no ? " · No " + escapeHtml(p.no) : ""}</div>
         <div class="p-meta">${p.kat ? "Kat: " + escapeHtml(p.kat) : ""}${p.kiraci ? " · " + escapeHtml(p.kiraci) : ""}</div>
       </div>
