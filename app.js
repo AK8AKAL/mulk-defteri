@@ -229,12 +229,8 @@ function renderBuildingDetail(id) {
   list.innerHTML = props.length
     ? props.map(p => propertyCardHtml(p)).join("")
     : `<div class="empty-state">Bu binaya henüz bağımsız bölüm eklenmedi.</div>`;
-  attachPropertyCardHandlers(list);
+  attachPropertyCardClickHandlers(list);
 }
-
-el("edit-building-btn").addEventListener("click", () => {
-  if (currentBuildingId) openBuildingModal(buildingById(currentBuildingId));
-});
 
 // ============================================================
 // KİRACILAR
@@ -293,7 +289,7 @@ function tenantCardHtml(p) {
 // ============================================================
 function propertyCardHtml(p) {
   const showRentRow = p.durum === "Kirada";
-  return `<div class="property-card" data-id="${p.id}">
+  return `<div class="property-card property-card--clickable" data-id="${p.id}">
     <div class="p-top">
       <div>
         <div class="p-name">${escapeHtml(p.nitelik)}${p.no ? " · No " + escapeHtml(p.no) : ""}</div>
@@ -305,9 +301,6 @@ function propertyCardHtml(p) {
         <span>Sözleşme: ${formatDateTR(p.sozlesme)}</span>
         <span class="p-rent">${formatCurrency(p.kiraBedeli)}/ay</span>
       </div>` : ""}
-    <div class="p-actions">
-      <button data-action="edit">Düzenle</button>
-    </div>
   </div>`;
 }
 
@@ -320,45 +313,17 @@ function attachPropertyCardHandlers(container) {
   });
 }
 
-// ============================================================
-// MODAL: BİNA FORMU
-// ============================================================
-function openBuildingModal(building) {
-  el("building-modal-title").textContent = "Binayı düzenle";
-  el("building-id").value = building.id;
-  el("b-ad").value = building.ad;
-  el("b-il").value = building.il;
-  el("b-ilce").value = building.ilce;
-  el("b-mahalle").value = building.mahalle || "";
-  el("b-binano").value = building.binaNo || "";
-  el("b-adaparsel").value = building.adaParsel || "";
-  el("b-yuzolcumu").value = building.yuzolcumu || "";
-  el("building-modal").hidden = false;
+function attachPropertyCardClickHandlers(container) {
+  container.querySelectorAll(".property-card").forEach(card => {
+    const id = card.dataset.id;
+    const property = properties.find(p => p.id === id);
+    if (!property) return;
+    card.addEventListener("click", () => openPropertyModal(property.buildingId, property));
+  });
 }
 
-el("building-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const id = el("building-id").value;
-  const data = {
-    ad: el("b-ad").value.trim(),
-    il: el("b-il").value.trim(),
-    ilce: el("b-ilce").value.trim(),
-    mahalle: el("b-mahalle").value.trim(),
-    binaNo: el("b-binano").value.trim(),
-    adaParsel: el("b-adaparsel").value.trim(),
-    yuzolcumu: el("b-yuzolcumu").value ? Number(el("b-yuzolcumu").value) : null,
-  };
-  try {
-    await db.collection("buildings").doc(id).update(data);
-    showToast("Bina güncellendi.");
-    closeModals();
-  } catch (err) {
-    showToast("Kaydedilemedi: " + err.message);
-  }
-});
-
 // ============================================================
-// MODAL: MÜLK FORMU
+// MODAL: BAĞIMSIZ BÖLÜM FORMU
 // ============================================================
 function toggleTenantFields() {
   const durum = el("p-durum").value;
@@ -368,7 +333,7 @@ function toggleTenantFields() {
 el("p-durum").addEventListener("change", toggleTenantFields);
 
 function openPropertyModal(buildingId, property) {
-  el("property-modal-title").textContent = "Mülkü düzenle";
+  el("property-modal-title").textContent = "Bağımsız bölümü düzenle";
   el("p-id").value = property.id;
   el("p-buildingid").value = buildingId;
   el("p-kat").value = property.kat || "";
@@ -409,7 +374,6 @@ el("property-form").addEventListener("submit", async (e) => {
 // MODAL KAPATMA (genel)
 // ============================================================
 function closeModals() {
-  el("building-modal").hidden = true;
   el("property-modal").hidden = true;
 }
 document.querySelectorAll("[data-close-modal]").forEach(btn => btn.addEventListener("click", closeModals));

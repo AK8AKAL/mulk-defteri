@@ -79,10 +79,6 @@
       <button id="back-to-buildings" class="back-link">← Binalar</button>
       <div id="building-detail-card" class="building-detail-card"></div>
 
-      <div class="detail-actions">
-        <button id="edit-building-btn" class="btn btn-ghost">Binayı düzenle</button>
-      </div>
-
       <div class="section-row">
         <h2 class="section-heading">Bağımsız Bölümler</h2>
       </div>
@@ -115,37 +111,11 @@
   </nav>
 </div>
 
-<!-- ===================== MODAL: BİNA FORMU ===================== -->
-<div id="building-modal" class="sheet-overlay" hidden>
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <h2 id="building-modal-title" class="sheet-title">Yeni bina</h2>
-    <form id="building-form" class="sheet-form">
-      <input type="hidden" id="building-id">
-      <label class="field"><span>Bina adı</span><input type="text" id="b-ad" required></label>
-      <div class="field-row">
-        <label class="field"><span>İl</span><input type="text" id="b-il" required></label>
-        <label class="field"><span>İlçe</span><input type="text" id="b-ilce" required></label>
-      </div>
-      <label class="field"><span>Mahalle</span><input type="text" id="b-mahalle"></label>
-      <div class="field-row">
-        <label class="field"><span>Bina no</span><input type="text" id="b-binano"></label>
-        <label class="field"><span>Ada/Parsel</span><input type="text" id="b-adaparsel"></label>
-      </div>
-      <label class="field"><span>Yüzölçümü (m²)</span><input type="number" id="b-yuzolcumu" min="0"></label>
-      <div class="sheet-buttons">
-        <button type="button" class="btn btn-ghost" data-close-modal>Vazgeç</button>
-        <button type="submit" class="btn btn-primary">Kaydet</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<!-- ===================== MODAL: MÜLK FORMU ===================== -->
+<!-- ===================== MODAL: BAĞIMSIZ BÖLÜM FORMU ===================== -->
 <div id="property-modal" class="sheet-overlay" hidden>
   <div class="sheet">
     <div class="sheet-handle"></div>
-    <h2 id="property-modal-title" class="sheet-title">Yeni mülk</h2>
+    <h2 id="property-modal-title" class="sheet-title">Bağımsız bölümü düzenle</h2>
     <form id="property-form" class="sheet-form">
       <input type="hidden" id="p-id">
       <input type="hidden" id="p-buildingid">
