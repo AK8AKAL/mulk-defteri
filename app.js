@@ -213,7 +213,7 @@ function renderBuildingsList() {
 function renderBuildingDetail(id) {
   const b = buildingById(id);
   if (!b) { currentBuildingId = null; showView("buildings"); return; }
-  const props = propertiesOf(id).sort((a, b2) => (a.kat || "").localeCompare(b2.kat || "", "tr"));
+  const props = propertiesOf(id).sort((a, b2) => (a.no || "").localeCompare(b2.no || "", "tr", { numeric: true }));
 
   el("building-detail-card").innerHTML = `
     <h2>${escapeHtml(b.ad)}</h2>
@@ -222,13 +222,13 @@ function renderBuildingDetail(id) {
       <div><dt>Bina no</dt><dd>${escapeHtml(b.binaNo || "—")}</dd></div>
       <div><dt>Ada/Parsel</dt><dd>${escapeHtml(b.adaParsel || "—")}</dd></div>
       <div><dt>Yüzölçümü</dt><dd>${b.yuzolcumu ? b.yuzolcumu + " m²" : "—"}</dd></div>
-      <div><dt>Mülk sayısı</dt><dd>${props.length}</dd></div>
+      <div><dt>Bağımsız bölüm sayısı</dt><dd>${props.length}</dd></div>
     </dl>`;
 
   const list = el("building-properties-list");
   list.innerHTML = props.length
     ? props.map(p => propertyCardHtml(p)).join("")
-    : `<div class="empty-state">Bu binaya henüz mülk eklenmedi.</div>`;
+    : `<div class="empty-state">Bu binaya henüz bağımsız bölüm eklenmedi.</div>`;
   attachPropertyCardHandlers(list);
 }
 
