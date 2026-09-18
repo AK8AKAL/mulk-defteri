@@ -289,17 +289,19 @@ function tenantCardHtml(p) {
 // ============================================================
 function propertyCardHtml(p) {
   const showRentRow = p.durum === "Kirada";
+  const title = p.kiraci ? `${p.kiraci} (${p.nitelik})` : p.nitelik;
+  const subtitle = [p.kat ? "Kat: " + p.kat : "", p.no ? "No:" + p.no : ""].filter(Boolean).join(" ");
   return `<div class="property-card property-card--clickable" data-id="${p.id}">
     <div class="p-top">
       <div>
-        <div class="p-name">${escapeHtml(p.nitelik)}${p.no ? " · No " + escapeHtml(p.no) : ""}</div>
-        <div class="p-meta">${p.kat ? "Kat: " + escapeHtml(p.kat) : ""}${p.kiraci ? " · " + escapeHtml(p.kiraci) : ""}</div>
+        <div class="p-name">${escapeHtml(title)}</div>
+        <div class="p-meta">${escapeHtml(subtitle)}</div>
       </div>
       <span class="badge ${badgeClass(p.durum)}">${escapeHtml(p.durum)}</span>
     </div>
     ${showRentRow ? `<div class="p-detail-row">
-        <span>Sözleşme: ${formatDateTR(p.sozlesme)}</span>
-        <span class="p-rent">${formatCurrency(p.kiraBedeli)}/ay</span>
+        <span>${formatDateTR(p.sozlesme)}</span>
+        <span class="p-rent">${formatCurrency(p.kiraBedeli)}</span>
       </div>` : ""}
   </div>`;
 }
