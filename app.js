@@ -290,7 +290,7 @@ function tenantCardHtml(p) {
 function propertyCardHtml(p) {
   const showRentRow = p.durum === "Kirada";
   const title = p.kiraci ? `${p.kiraci} (${p.nitelik})` : p.nitelik;
-  const subtitle = [p.kat ? "Kat: " + p.kat : "", p.no ? "No:" + p.no : ""].filter(Boolean).join(" ");
+  const subtitle = [p.kat ? "Kat: " + p.kat : "", p.no ? "No: " + p.no : ""].filter(Boolean).join(" ");
   return `<div class="property-card property-card--clickable" data-id="${p.id}">
     <div class="p-top">
       <div>
@@ -329,6 +329,9 @@ function attachPropertyCardClickHandlers(container) {
 // ============================================================
 function toggleTenantFields() {
   const durum = el("p-durum").value;
+  const isBos = durum === "Boş";
+  el("p-kiraci-field").style.display = isBos ? "none" : "flex";
+  if (isBos) el("p-kiraci").value = "";
   el("p-kira-field").style.display = durum === "Kirada" ? "flex" : "none";
   el("p-tarih-field").style.display = durum === "Kirada" ? "flex" : "none";
 }
